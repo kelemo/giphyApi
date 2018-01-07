@@ -8,29 +8,32 @@
   body {
   margin: 0;
   padding: 0;
-  font-family: 'Lato', sans-serif;
-  font-size: 20pt;
-  font-weight: normal;
+  font-family: sans-serif;
+  font-size: 14pt;
+  font-weight: normal;  
+  color: #007FB6;
   background: red;
-  /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(-90deg, red, yellow);
-  /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(-90deg, red, yellow);
-  /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(-90deg, red, yellow);
-  /* For Firefox 3.6 to 15 */
   background: linear-gradient(-90deg, red, yellow);
-  /* Standard syntax */
+  padding-left: 80px;
+ 
+
 }
 
 button {
   padding: 20px 25px;
   background: transparent;
   font-size: 18pt;
+  color:#00bcd4;
   border: 1px solid gold;
-  color: green;
   outline: 0;
 }
+
+.demo {
+  display: inline-block;
+  margin-right: 12px;
+}
+
+
 </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -38,9 +41,22 @@ button {
 </head>
 <body>
 
+<div class="jumbotron">
+  <h1 class="display-4">My Favorite Animal Gifs!</h1>
+  <p class="lead">If you click on the following animal buttons, the website is populated by ten different gifs of these animals.</p>
+</div>
+
+
 <button data-animal ="giraffe">Giraffe</button>
 <button data-animal ="elephant">Elephant</button>
 <button data-animal ="dolphin">Dolphin</button>
+<button data-animal ="camel">Camel</button>
+<button data-animal ="zebra">Zebra</button>
+<button data-animal ="eagle">Eagle</button>
+<button data-animal ="cat">Cat</button>
+<button data-animal ="dog">Dog</button>
+
+
 <div id="gifs"></div>
 
 <script type="text/javascript">
@@ -59,16 +75,23 @@ button {
         url: queryURL,
         method: "GET"
       }).done(function(response) {
-      	for(var i = 0; i<response.data.length; i++){
-      		var animalDiv = $('<div>');
-      		var p = $('<p>').text("Rating "+response.data[i].rating);
-      		var animalImage =$('<img>');
-      		animalImage.attr('src', response.data[i].images.fixed_height.url);
-      		animalDiv.append(p);
-      		animalDiv.append(animalImage);
-      		$('#gifs').append(animalDiv);
-
-
+        for(var i = 0; i<response.data.length; i++){
+          var animalDiv = $('<div>');
+          var p = $('<p>').text("Rating "+response.data[i].rating);
+          var animalImage =$('<img>');
+          $(animalImage).addClass("gif");
+          $(animalImage).attr("data-state", "animate");
+          var animatedUrl = response.data[i].images.fixed_height.url;
+          var stillUrl = response.data[i].images.fixed_height_still.url;
+          $(animalImage).attr("data-animate", animatedUrl);
+          $(animalImage).attr("data-still", stillUrl);
+          console.log(response);
+          animalImage.attr('src', response.data[i].images.fixed_height.url);
+          animalDiv.append(p);
+          $(animalDiv).addClass("demo");
+          animalDiv.append(animalImage);
+          $('#gifs').append(animalDiv);
+      }
 
       $(".gif").on("click", function() {
       // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
@@ -81,11 +104,12 @@ button {
         $(this).attr("data-state", "animate");
       } else {
         $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-state", "still");
-      }
-    });
-      	}
+        $(this).attr("data-state", "still");  
+        }
       });
+    });
+      
+      
   })
 
 
