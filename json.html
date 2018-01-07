@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Animal gifs</title>
+
+  <style> 
+
+  body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
+  font-size: 20pt;
+  font-weight: normal;
+  background: red;
+  /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(-90deg, red, yellow);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(-90deg, red, yellow);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(-90deg, red, yellow);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(-90deg, red, yellow);
+  /* Standard syntax */
+}
+
+button {
+  padding: 20px 25px;
+  background: transparent;
+  font-size: 18pt;
+  border: 1px solid gold;
+  color: green;
+  outline: 0;
+}
+</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+</head>
+<body>
+
+<button data-animal ="giraffe">Giraffe</button>
+<button data-animal ="elephant">Elephant</button>
+<button data-animal ="dolphin">Dolphin</button>
+<div id="gifs"></div>
+
+<script type="text/javascript">
+ 
+  $('button').on ('click', function(){
+    var x = $(this).data("animal");
+    console.log(x);
+
+
+    // Here we are building the URL we need to query the database
+
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q="+x+"&api_key=aJ2wZRvVrSFh5eMxpxjIQIf7gpftmcyY&limit=10";
+
+// Perfoming an AJAX GET request to our queryURL
+      $.ajax({
+        url: queryURL,
+        method: "GET"
+      }).done(function(response) {
+      	for(var i = 0; i<response.data.length; i++){
+      		var animalDiv = $('<div>');
+      		var p = $('<p>').text("Rating "+response.data[i].rating);
+      		var animalImage =$('<img>');
+      		animalImage.attr('src', response.data[i].images.fixed_height.url);
+      		animalDiv.append(p);
+      		animalDiv.append(animalImage);
+      		$('#gifs').append(animalDiv);
+
+
+
+      $(".gif").on("click", function() {
+      // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+      var state = $(this).attr("data-state");
+      // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+      // Then, set the image's data-state to animate
+      // Else set src to the data-still value
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    });
+      	}
+      });
+  })
+
+
+
+
+</script>
+
+
+
+</body>
+</html>
