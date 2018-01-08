@@ -2,7 +2,6 @@
 <html>
 <head>
   <title>Animal gifs</title>
-
   <style> 
 
   body {
@@ -15,15 +14,13 @@
   background: red;
   background: linear-gradient(-90deg, red, yellow);
   padding-left: 80px;
- 
-
 }
 
 button {
   padding: 20px 25px;
   background: transparent;
   font-size: 18pt;
-  color:#00bcd4;
+  color:white;
   border: 1px solid gold;
   outline: 0;
 }
@@ -33,40 +30,46 @@ button {
   margin-right: 12px;
 }
 
-
 </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 
 </head>
 <body>
 
 <div class="jumbotron">
-  <h1 class="display-4">My Favorite Animal Gifs!</h1>
-  <p class="lead">If you click on the following animal buttons, the website is populated by ten different gifs of these animals.</p>
+  <h1 class="display-4">My Favorite Animal Gifs! </h1>
+  <h4 class="lead">Click on the Animal of your Choice to see the Magic of JS,jQuery, and Giphy API. <br><br>
+    If you click on any of the following animal buttons, the website is populated by ten different gifs of that animals.<br> <br>
+    You can click on the image to stop the animation (playing). You can click on the same image again to play or animate it.
+
+  </h4>
 </div>
 
-
-<button data-animal ="giraffe">Giraffe</button>
-<button data-animal ="elephant">Elephant</button>
-<button data-animal ="dolphin">Dolphin</button>
-<button data-animal ="camel">Camel</button>
-<button data-animal ="zebra">Zebra</button>
-<button data-animal ="eagle">Eagle</button>
-<button data-animal ="cat">Cat</button>
-<button data-animal ="dog">Dog</button>
+    <button data-animal ="giraffe">Giraffe</button>
+    <button data-animal ="elephant">Elephant</button>
+    <button data-animal ="dolphin">Dolphin</button>
+    <button data-animal ="camel">Camel</button>
+    <button data-animal ="zebra">Zebra</button>
+    <button data-animal ="eagle">Eagle</button>
+    <button data-animal ="cat">Cat</button>
+    <button data-animal ="dog">Dog</button>
+    <button data-animal ="squirrel">Squirrel</button>
 
 
 <div id="gifs"></div>
 
 <script type="text/javascript">
  
+// Here is our button on click function that captures our clicks and converts into the magic of js and jq.
+
   $('button').on ('click', function(){
     var x = $(this).data("animal");
+
+// Console log variable x and check out what it yields. 
+
     console.log(x);
 
-
-    // Here we are building the URL we need to query the database
+// Here we are building the URL we need to query the database
 
     var queryURL = "http://api.giphy.com/v1/gifs/search?q="+x+"&api_key=aJ2wZRvVrSFh5eMxpxjIQIf7gpftmcyY&limit=10";
 
@@ -75,18 +78,46 @@ button {
         url: queryURL,
         method: "GET"
       }).done(function(response) {
+
+// We loop through the list of our animals using the for loop method. 
+
         for(var i = 0; i<response.data.length; i++){
           var animalDiv = $('<div>');
+
+// This code helps us to display the rating for the giphy images (gifs).
+
           var p = $('<p>').text("Rating "+response.data[i].rating);
+
+// We can console log out (response.data ) to make sure that everything is in a proper working order. 
+
+        console.log(response.date);
+
+      
+// We create a new varibale and use the jQuery method to access html
+
           var animalImage =$('<img>');
+
+// We add class attribute to manipulate how the image populate the website. We control the style of the gifs using the JS and CSS.
           $(animalImage).addClass("gif");
+
+// We animate the gif images or stop animating the gif images. If we click on the image  it stops animation and if we click again, it plays. The conditions for the code from line 106 to 117 is written beneath (from line 134 to 140).
+          
+
           $(animalImage).attr("data-state", "animate");
           var animatedUrl = response.data[i].images.fixed_height.url;
+
+ 
           var stillUrl = response.data[i].images.fixed_height_still.url;
           $(animalImage).attr("data-animate", animatedUrl);
           $(animalImage).attr("data-still", stillUrl);
+
+// We console log response to make sure that everthing is in he working order
+
           console.log(response);
           animalImage.attr('src', response.data[i].images.fixed_height.url);
+
+// We append the animaldiv variable to the html using the jQuery 
+
           animalDiv.append(p);
           $(animalDiv).addClass("demo");
           animalDiv.append(animalImage);
@@ -94,11 +125,12 @@ button {
       }
 
       $(".gif").on("click", function() {
-      // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+// The attr jQuery method allows us to get or set the value of any attribute on our HTML element
       var state = $(this).attr("data-state");
-      // If the clicked image's state is still, update its src attribute to what its data-animate value is.
-      // Then, set the image's data-state to animate
-      // Else set src to the data-still value
+// If the clicked image's state is still, update its src attribute to what its data-animate value is.
+// Then, set the image's data-state to animate
+// Else set src to the data-still value
+
       if (state === "still") {
         $(this).attr("src", $(this).attr("data-animate"));
         $(this).attr("data-state", "animate");
@@ -112,12 +144,7 @@ button {
       
   })
 
-
-
-
 </script>
-
-
 
 </body>
 </html>
